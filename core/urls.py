@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import HomeView, ProfileView, EventView
+from .views import ProfileView, EventView
 
 
 app_name = 'core'
