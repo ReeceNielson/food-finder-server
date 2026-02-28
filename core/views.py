@@ -29,8 +29,8 @@ class ProfileView(View):
     def post(self, request):
         try:
             body = json.loads(request.body)
-            print(body)
-            supabase_response = supabase.table('users').upsert(body['user_data']).execute()
+            body['id'] = request.user_id
+            supabase_response = supabase.table('users').upsert(body).execute()
             return JsonResponse({'message': 'Profile updated successfully', 'data': supabase_response.data})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
@@ -50,7 +50,9 @@ class EventView(View):
         try:
             query = supabase.from_('events').select('*')
             if event_types:
-                query = query.filter('event_type', 'in', tuple(event_types.split(',')))
+                types_list = [t.strip() for t in event_types.split(',')]
+                or_conditions = ','.join([f'types.cs.["{t}"]' for t in types_list])
+                query = query.or_(or_conditions)
             events = query.execute()
             return JsonResponse({'events': events.data})
         except Exception as e:
