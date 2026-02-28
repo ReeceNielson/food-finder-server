@@ -35,7 +35,8 @@ def authenticate_required(view_func):
             
             if supabase_response.user:
                 # Attach user to request for use in the view
-                request.user_data = supabase_response.user
+                request.user_id = supabase_response.user.id
+                print("here")
                 return view_func(request, *args, **kwargs)
             else:
                 return JsonResponse(
