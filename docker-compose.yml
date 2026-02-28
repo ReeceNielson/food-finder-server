@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    container_name: django-app
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py createsuperuser --noinput --username admin --email admin@example.com || true &&
+             gunicorn --bind 0.0.0.0:8000 --reload config.wsgi:application"
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - DJANGO_SECRET_KEY=development-secret-key-change-this
+      - ALLOWED_HOSTS=localhost,127.0.0.1,web
+      - DB_ENGINE=django.db.backends.sqlite3
+      - DB_NAME=/app/db.sqlite3
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+
+  # Uncomment below if you need PostgreSQL
+  # db:
+  #   image: postgres:15
+  #   container_name: django-db
+  #   environment:
+  #     - POSTGRES_DB=django_db
+  #     - POSTGRES_USER=django_user
+  #     - POSTGRES_PASSWORD=django_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+# volumes:
+#   postgres_data:
