@@ -1,10 +1,10 @@
 from django.urls import path
-from .views import HomeView, Supabase
+from .views import HomeView, ProfileView, EventView
 
 
 app_name = 'core'
 
 urlpatterns = [
-    path('', HomeView.as_view(), name='home'),
-    path('supabase/', Supabase.get_events, name='supabase'),
+    path('events/', EventView.as_view(), name='events'),
+    path('profile/', ProfileView.as_view(), name='profile'),
 ]
