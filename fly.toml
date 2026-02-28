@@ -1,48 +1,47 @@
-# fly.toml app configuration file
-app = "my-django-app"  # Change this to your app name
-primary_region = "dfw"  # Dallas - change to your preferred region
+# fly.toml app configuration file generated for food-finder-server on 2026-02-27T22:52:34-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-# Build configuration
+app = 'food-finder-server'
+primary_region = 'dfw'
+
 [build]
-dockerfile = "Dockerfile"
+  dockerfile = 'Dockerfile'
 
-# Environment variables
-[env]
-PYTHONUNBUFFERED = "1"
-PYTHONDONTWRITEBYTECODE = "1"
-
-# Deployment checks
 [deploy]
-release_command = "python manage.py migrate"  # Run migrations on deploy
+  release_command = 'python manage.py migrate'
 
-# Services configuration
+[env]
+  PYTHONDONTWRITEBYTECODE = '1'
+  PYTHONUNBUFFERED = '1'
+
 [[services]]
-internal_port = 8080
-processes = ["app"]
+  protocol = ''
+  internal_port = 8080
+  processes = ['app']
 
-# HTTP protocol
-[[services.ports]]
-port = 80
-handlers = ["http"]
+  [[services.ports]]
+    port = 80
+    handlers = ['http']
 
-# HTTPS protocol  
-[[services.ports]]
-port = 443
-handlers = ["tls", "http"]
+  [[services.ports]]
+    port = 443
+    handlers = ['tls', 'http']
 
-# Health check
-[checks.http_endpoint]
-grace_period = "5s"
-interval = "30s"
-method = "get"
-path = "/health/"
-protocol = "http"
-timeout = "10s"
-tls_skip_verify = false
+[checks]
+  [checks.http_endpoint]
+    port = 8080
+    type = 'http'
+    interval = '30s'
+    timeout = '10s'
+    grace_period = '5s'
+    method = 'get'
+    path = '/health/'
+    tls_skip_verify = false
 
-# Scaling configuration
 [[vm]]
-cpu_kind = "shared"
-cpus = 1
-memory_mb = 256
-processes = ["app"]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 512
+  processes = ['app']

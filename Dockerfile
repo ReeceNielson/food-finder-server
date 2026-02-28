@@ -35,12 +35,10 @@ ENV PATH=/root/.local/bin:$PATH \
 # Copy application code
 COPY . .
 
-# Create non-root user for security
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
-USER appuser
+
 
 # Collect static files (optional, adjust if needed)
 # RUN python manage.py collectstatic --noinput || true
 
 # Command to run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "4", "--timeout", "60", "config.wsgi:application"]
+CMD ["gunicorn", "--bind", "[::]:8080", "--workers", "4", "--timeout", "60", "config.wsgi:application"]

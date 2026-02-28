@@ -17,7 +17,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,*.fly.dev,*').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -113,6 +113,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Security settings for production
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
+    SECURE_REDIRECT_EXEMPT = [r'^health/$']
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 31536000
