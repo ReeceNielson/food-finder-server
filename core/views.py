@@ -1,13 +1,7 @@
-import os
-
 from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
-from supabase import create_client, Client
-
-url: str = os.environ.get("SUPABASE_URL")
-key: str = os.environ.get("SUPABASE_KEY")
-supabase: Client = create_client(url, key)
+from .utils.supabase import supabase
 
 class HomeView(View):
     """Example view"""
